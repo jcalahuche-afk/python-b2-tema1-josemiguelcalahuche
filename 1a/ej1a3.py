@@ -75,48 +75,65 @@ from typing import Tuple, Dict, List, Type
 
 def define_types() -> Tuple[Type[namedtuple], Type[namedtuple]]:
     # Write here your code
-    pass
+    User = namedtuple('User', ['name', 'email'])
+    Book = namedtuple('Book', ['title', 'author', 'isbn'])
+    return Book, User
 
 
 def register_loan(loans: dict[Type[namedtuple], list[Type[namedtuple]]], popularity: Counter, user: Type[namedtuple], book: Type[namedtuple]) -> bool:
     # Write here your code
-    pass
+    loans[user].append(book)
+    popularity[book] += 1
+    return True
 
 
 def register_return(loans: dict[Type[namedtuple], list[Type[namedtuple]]], user: Type[namedtuple], book: Type[namedtuple]) -> bool:
     # Write here your code
-    pass
+    loans[user].remove(book)
+    return True
 
 
 def most_popular_books(popularity: Counter, N: int = 3) -> List[Tuple[namedtuple, int]]:
     # Write here your code
-    pass
+    result = []
+    for book in popularity:
+        if len(result) == 0:
+            result.append((book, popularity[book]))
+        else:
+            for i in range(len(result)):
+                if result[i][1] < popularity[book]:
+                    result.insert(i, (book, popularity[book]))
+            
+            if len(result) < N and book not in result:
+                result.append((book, popularity[book]))
+
+    return result
 
 # Para probar el código, descomenta las siguientes líneas
-# if __name__ == "__main__":
+if __name__ == "__main__":
 
-#     Book, User = define_types()
-#     loans: Dict[User, List[Book]] = defaultdict(list)
-#     popularity: Counter = Counter()
+    Book, User = define_types()
+    loans: Dict[User, List[Book]] = defaultdict(list)
+    popularity: Counter = Counter()
     
-#     user1 = User(name="John Doe", email="john@example.com")
-#     user2 = User(name="Jane Smith", email="jane@example.com")
+    user1 = User(name="John Doe", email="john@example.com")
+    user2 = User(name="Jane Smith", email="jane@example.com")
     
-#     book1 = Book(title="Python 101", author="Someone", isbn="1234567890")
-#     book2 = Book(title="Learn Python", author="Another One", isbn="0987654321")
-#     book3 = Book(title="Advanced Python", author="Expert Author", isbn="1122334455")
-#     book4 = Book(title="Python Data Science", author="Data Scientist", isbn="2233445566")
+    book1 = Book(title="Python 101", author="Someone", isbn="1234567890")
+    book2 = Book(title="Learn Python", author="Another One", isbn="0987654321")
+    book3 = Book(title="Advanced Python", author="Expert Author", isbn="1122334455")
+    book4 = Book(title="Python Data Science", author="Data Scientist", isbn="2233445566")
 
-#     register_loan(loans, popularity, user1, book1)
-#     register_loan(loans, popularity, user2, book1)
-#     register_loan(loans, popularity, user2, book3)
-#     register_loan(loans, popularity, user1, book4)
+    register_loan(loans, popularity, user1, book1)
+    register_loan(loans, popularity, user2, book1)
+    register_loan(loans, popularity, user2, book3)
+    register_loan(loans, popularity, user1, book4)
     
-#     register_return(loans, user1, book4)
+    register_return(loans, user1, book4)
     
-#     for user, books in loans.items():
-#         book_titles = [book.title for book in books]
-#         print(f"{user.name} has borrowed: {book_titles}")
+    for user, books in loans.items():
+        book_titles = [book.title for book in books]
+        print(f"{user.name} has borrowed: {book_titles}")
     
-#     popular_books = most_popular_books(popularity, 2)
-#     print("Most popular books based on loans:", [(book.title, count) for book, count in popular_books])
+    popular_books = most_popular_books(popularity, 2)
+    print("Most popular books based on loans:", [(book.title, count) for book, count in popular_books])

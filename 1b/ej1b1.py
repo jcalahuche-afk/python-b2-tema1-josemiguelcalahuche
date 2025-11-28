@@ -45,31 +45,59 @@ from typing import List
 
 
 def mcd(a: int, b: int) -> int:
-    while b:
+    r = 0
+    while True:
+        r = a % b
+        a = b
+        b = r 
         
+        if r == 0:
+            break
     return a
 
-
 def mcd_list(numbers: List[int]) -> int:
-    result = 
-    for number in numbers[1:]:
-        result = 
-    return result
+    while True:
+        mcds = []
+        for i in range(len(numbers) - 1, 0, -1):
+            mcds.append(mcd(numbers[i], numbers[i - 1]))
+
+        if len(mcds) == 1:
+            return mcds[0]
+        else:
+            numbers = mcds
 
 
 def mcm(a: int, b: int) -> int:
-    return 
+    i = 1
+    aList = []
+    bList = []
+    while True:
+        aList.append(a * i)
+        bList.append(b * i)
+        if a * i in bList:
+            return a * i
+        elif b * i in aList:
+            return b * i
+
+        if i == 10:
+            break
+        i += 1
 
 
 def mcm_list(numbers: List[int]) -> int:
-    result = 
-    for number in numbers[1:]:
-        result = 
-    return result
+    while True:
+        mcms = []
+        for i in range(len(numbers) - 1, 0, -1):
+            mcms.append(mcm(numbers[i], numbers[i - 1]))
+
+        if len(mcms) == 1:
+            return mcms[0]
+        else:
+            numbers = mcms
 
 
 # Para probar el código, descomenta las siguientes líneas
-# if __name__ == "__main__":
-    # numbers = [4, 6]
-    # print(f"The MCD of {numbers} is {mcd_list(numbers)}.")
-    # print(f"The MCM of {numbers} is {mcm_list(numbers)}.")
+if __name__ == "__main__":
+    numbers = [4, 6]
+    print(f"The MCD of {numbers} is {mcd_list(numbers)}.")
+    print(f"The MCM of {numbers} is {mcm_list(numbers)}.")

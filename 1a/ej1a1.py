@@ -33,40 +33,51 @@ versión modificada de este bytearray tras incrementar cada byte, y finalmente, 
 el bytearray modificado.
 """
 
-from typing import ByteString, Union
-
+from typing import Union
+from collections.abc import Buffer as ByteString
 
 def text_to_bytes(text: str) -> bytes:
     # Write here your code
-    pass
+    return text.encode()
 
 
 def reverse_bytes(bytes_data: ByteString) -> bytearray:
     # Write here your code
-    pass
+    result = bytearray(bytes_data)
+    result.reverse()
+    return result
 
 
 def increment_bytearray_rollover(byte_array: bytearray) -> bytearray:
     # Write here your code
-    pass
+    new_bytearray = bytearray()
+    for byte in byte_array:
+        if byte + 1 == 256:
+            print("0")
+            new_bytearray.append(0)
+        else:
+            print(byte + 1)
+            new_bytearray.append(byte + 1)
+    return new_bytearray
 
 
 def bytes_to_text(bytes_data: Union[bytes, bytearray]) -> str:
     # Write here your code
-    pass
+    return bytes_data.decode()
 
 
 # Para probar el código, descomenta las siguientes líneas
-# if __name__ == "__main__":
-#     original_text = "Hola Mundo!"
-#     original_bytes = text_to_bytes(original_text)
-#     print("Original Bytes:", original_bytes)
 
-#     reversed_bytearray = reverse_bytes(original_bytes)
-#     print("Reversed Bytearray:", reversed_bytearray)
+if __name__ == "__main__":
+    original_text = "Hola Mundo!"
+    original_bytes = text_to_bytes(original_text)
+    print("Original Bytes:", original_bytes)
 
-#     modified_bytearray = increment_bytearray_rollover(reversed_bytearray)
-#     print("Modified Bytearray:", modified_bytearray)
+    reversed_bytearray = reverse_bytes(original_bytes)
+    print("Reversed Bytearray:", reversed_bytearray)
 
-#     processed_text = bytes_to_text(modified_bytearray)
-#     print("Processed Text:", processed_text)
+    modified_bytearray = increment_bytearray_rollover(reversed_bytearray)
+    print("Modified Bytearray:", modified_bytearray)
+
+    processed_text = bytes_to_text(modified_bytearray)
+    print("Processed Text:", processed_text)

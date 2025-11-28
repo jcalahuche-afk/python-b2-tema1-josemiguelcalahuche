@@ -63,23 +63,35 @@ tasks: Dict[int, Task] = {}
 
 def create_task(title: str) -> int:
     # Write here your code
-    pass
+    id = len(tasks) + 1
+    tasks[len(tasks) + 1] = Task(len(tasks) + 1, title, TaskStatus.PENDING)
+    return id
 
 
 def change_task_status(task_id: int, new_status: TaskStatus) -> bool:
     # Write here your code
-    pass
+    if task_id not in tasks.keys():
+        return False
+    
+    tasks[task_id] = Task(tasks[task_id].id, tasks[task_id].title, new_status)
+    return True
 
 
 def list_tasks() -> None:
     # Write here your code
-    pass
+    for task_id in tasks:
+        if tasks[task_id].status == TaskStatus.IN_PROGRESS:
+            print(f"ID: {str(tasks[task_id].id)}, Title: {str(tasks[task_id].title)}, Status: In Progress")
+        elif tasks[task_id].status == TaskStatus.PENDING:
+            print(f"ID: {str(tasks[task_id].id)}, Title: {str(tasks[task_id].title)}, Status: Pending")
+        elif tasks[task_id].status == TaskStatus.COMPLETED:
+            print(f"ID: {str(tasks[task_id].id)}, Title: {str(tasks[task_id].title)}, Status: Completed")
 
 
 # Para probar el código, descomenta las siguientes líneas 
-# if __name__ == "__main__":
-#     id1 = create_task("Learn Python")
-#     id2 = create_task("Read Enum documentation")
-#     change_task_status(id1, TaskStatus.IN_PROGRESS)
-#     change_task_status(id2, TaskStatus.COMPLETED)
-#     list_tasks()
+if __name__ == "__main__":
+    id1 = create_task("Learn Python")
+    id2 = create_task("Read Enum documentation")
+    change_task_status(id1, TaskStatus.IN_PROGRESS)
+    change_task_status(id2, TaskStatus.COMPLETED)
+    list_tasks()
